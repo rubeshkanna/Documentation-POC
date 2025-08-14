@@ -1,0 +1,35 @@
+<div class="grid grid-2">
+    <div class="card box">
+      <div class="section-title">Generation Settings</div>
+      <label class="row input-check">
+        <input type="checkbox" [checked]="value.includeExamples" (change)="toggle('includeExamples')" />
+        <span>
+          Include Code Examples
+          <div class="help">Add usage examples for functions and components</div>
+        </span>
+      </label>
+      <label class="row input-check">
+        <input type="checkbox" [checked]="value.includeTypes" (change)="toggle('includeTypes')"/>
+        <span>
+          Include Type Information
+          <div class="help">Document parameter types and return values</div>
+        </span>
+      </label>
+    </div>
+  
+    <div class="card box">
+      <div class="section-title">Detail Level</div>
+      <div class="levels">
+        <button class="pill" [class.active]="value.detail==='concise'" (click)="setDetail('concise')">
+          <div class="t">Concise</div><div class="s">Essential info only</div>
+        </button>
+        <button class="pill active" [class.active]="value.detail==='detailed'" (click)="setDetail('detailed')">
+          <div class="t">Detailed</div><div class="s">Comprehensive docs</div>
+        </button>
+        <button class="pill" [class.active]="value.detail==='complete'" (click)="setDetail('complete')">
+          <div class="t">Complete</div><div class="s">All possible details</div>
+        </button>
+      </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,8 @@
+.header{display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:18px}
+.header .left h1{font-size:28px; margin-top:8px}
+.stack{display:flex; flex-direction:column; gap:16px}
+.section{padding:18px}
+.cta{display:flex; align-items:center; justify-content:space-between; padding:16px}
+.status{display:flex; align-items:center; gap:12px}
+.bar{width:200px; height:8px; border-radius:999px; background:#eee; overflow:hidden}
+.fill{height:100%; background:linear-gradient(90deg,#a78bfa,#7c3aed)}

@@ -1,0 +1,19 @@
+<div class="section-title">Choose Template</div>
+<div class="tabbar">
+  <button class="tab" [class.active]="tab()==='api-code'" (click)="setTab('api-code')">API &amp; Code (1)</button>
+  <button class="tab" [class.active]="tab()==='guides'" (click)="setTab('guides')">Guides (3)</button>
+  <button class="tab" [class.active]="tab()==='reference'" (click)="setTab('reference')">Reference (2)</button>
+</div>
+
+<div class="cards">
+  <div class="card template" *ngFor="let c of filtered()">
+    <div class="template-body">
+      <div class="template-title">{{ c.title }}</div>
+      <div class="template-sub">{{ c.subtitle }}</div>
+      <ul class="bullets">
+        <li *ngFor="let b of c.bullets">• {{ b }}</li>
+      </ul>
+    </div>
+    <button class="btn btn-ghost" (click)="pick(c.id)">Select</button>
+  </div>
+</div>

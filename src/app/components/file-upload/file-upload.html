@@ -1,0 +1,27 @@
+<div class="upload card"
+     [class.dragging]="dragging()"
+     (drop)="onDrop($event)">
+  <div class="dropzone">
+    <div class="icon">⬆️</div>
+    <div class="title">Drag &amp; drop files here, or
+      <label class="browse">
+        browse
+        <input type="file" multiple [accept]="accept" (change)="onBrowse($event)"/>
+      </label>
+    </div>
+    <div class="help">Supports .js, .ts, .jsx, .tsx, .py, .java, .cpp files</div>
+  </div>
+
+  <div class="list" *ngIf="files().length">
+    <div class="item" *ngFor="let f of files(); let i = index">
+      <div class="file-row">
+        <div class="icon-file">📄</div>
+        <div class="meta">
+          <div class="name">{{ f.name }}</div>
+          <div class="size">{{ (f.size/1024 | number:'1.0-0') }} KB</div>
+        </div>
+      </div>
+      <button class="remove" (click)="remove(i)" aria-label="Remove">✕</button>
+    </div>
+  </div>
+</div>

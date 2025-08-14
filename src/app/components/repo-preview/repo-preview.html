@@ -1,0 +1,7 @@
+<div class="card repo">
+    <div class="row" *ngFor="let e of entries">
+      <span class="icon">{{ e.type === 'folder' ? '📁' : '📄' }}</span>
+      <span class="name">{{ e.name }}</span>
+    </div>
+  </div>
+  
