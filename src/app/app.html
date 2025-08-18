@@ -11,9 +11,11 @@
     <!-- Left column: uploader + repo preview -->
     <div class="stack">
       <div class="card">
-        <app-file-upload (filesChange)="files.set($event)"></app-file-upload>
+        <!-- <app-file-upload (filesChange)="files.set($event)"></app-file-upload> -->
+        <app-file-upload (folderSelected)="onFolderSelected($event)"></app-file-upload>
       </div>
-      <app-repo-preview></app-repo-preview>
+      <!-- <app-repo-preview></app-repo-preview> -->      
+      <app-repo-preview [fileTree]="repoStructure"></app-repo-preview>
     </div>
 
     <!-- Right column: template + settings -->

@@ -6,6 +6,12 @@ export interface RepoEntry {
   type: 'folder'|'file';
 }
 
+interface FileNode {
+  name: string;
+  type: 'file' | 'folder';
+  children?: FileNode[];
+}
+
 @Component({
   selector: 'app-repo-preview',
   standalone: true,
@@ -20,4 +26,6 @@ export class RepoPreview {
     {name:'package.json', type:'file'},
     {name:'README.md', type:'file'}
   ];
+
+  @Input() fileTree: FileNode[] = [];
 }

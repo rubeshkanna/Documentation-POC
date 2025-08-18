@@ -6,11 +6,30 @@
     <div class="title">Drag &amp; drop files here, or
       <label class="browse">
         browse
-        <input type="file" multiple [accept]="accept" (change)="onBrowse($event)"/>
+        <!-- <input type="file" multiple [accept]="accept" (change)="onBrowse($event)"/> -->
+        <input 
+            type="file" 
+            (change)="onFilesSelected($event)" 
+            multiple
+            webkitdirectory
+            directory
+        />
       </label>
     </div>
+    
     <div class="help">Supports .js, .ts, .jsx, .tsx, .py, .java, .cpp files</div>
   </div>
+
+  <!-- <div class="upload-container">
+    <input 
+      type="file" 
+      (change)="onFilesSelected($event)" 
+      multiple
+      webkitdirectory
+      directory
+    />
+    <p>Drag & drop or select a folder</p>
+  </div> -->
 
   <div class="list" *ngIf="files().length">
     <div class="item" *ngFor="let f of files(); let i = index">

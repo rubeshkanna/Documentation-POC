@@ -1,6 +1,12 @@
 import { Component, EventEmitter, Output, signal, computed, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+interface FileNode {
+  name: string;
+  type: 'file' | 'folder';
+  children?: FileNode[];
+}
+
 @Component({
   selector: 'app-file-upload',
   standalone: true,
@@ -56,5 +62,55 @@ export class FileUpload {
     const next = [...this.files(), ...allowed];
     this.files.set(next);
     this.filesChange.emit(next);
+  }
+
+
+
+  @Output() folderSelected = new EventEmitter<FileNode[]>();
+
+  // Folders we want to skip entirely
+  private excludedFolders = ['node_modules', '.angular', '.vscode', '.git'];
+
+  onFilesSelected(event: any) {
+    const files: File[] = Array.from(event.target.files);
+    const fileTree = this.buildFileTree(files);
+    this.folderSelected.emit(fileTree);
+  }
+
+  private buildFileTree(files: File[]): FileNode[] {
+    const root: FileNode[] = [];
+
+    files.forEach(file => {
+      const pathParts = (file as any).webkitRelativePath.split('/');
+
+      // Check if any part of the path is excluded
+      if (pathParts.some((part: string) => this.excludedFolders.includes(part))) {
+        return; // Skip this file
+      }
+
+      this.addToTree(root, pathParts);
+    });
+
+    return root;
+  }
+
+  private addToTree(tree: FileNode[], pathParts: string[]) {
+    if (pathParts.length === 0) return;
+
+    const [current, ...rest] = pathParts;
+    let node = tree.find(n => n.name === current);
+
+    if (!node) {
+      node = {
+        name: current,
+        type: rest.length > 0 ? 'folder' : 'file',
+        children: rest.length > 0 ? [] : undefined
+      };
+      tree.push(node);
+    }
+
+    if (rest.length > 0) {
+      this.addToTree(node.children!, rest);
+    }
   }
 }

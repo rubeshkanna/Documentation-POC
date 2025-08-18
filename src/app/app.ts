@@ -30,6 +30,12 @@ export class App {
 
   canGenerate = computed(() => !!this.files().length && !!this.templateId() && !this.generating());
 
+  repoStructure: any[] = [];
+
+  onFolderSelected(tree: any[]) {
+    this.repoStructure = tree;
+  }
+
   constructor(private gen: GeneratorService){}
 
   onGenerate(){
