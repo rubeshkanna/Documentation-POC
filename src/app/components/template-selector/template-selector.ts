@@ -21,7 +21,41 @@ export class TemplateSelector {
       tab: 'api-code',
       title: 'API Reference',
       subtitle: 'Comprehensive API documentation with endpoints, parameters, and examples',
-      bullets: ['Function signatures','Parameter details','Return types','Usage examples']
+      bullets: ['Function signatures', 'Parameter details', 'Return types', 'Usage examples']
+    },
+    {
+      id: 'technical-documentation',
+      tab: 'guides',
+      title: 'Technical Documentation',
+      subtitle: 'Detailed documentation explaining the system’s architecture, design, and implementation for developers and maintainers.',
+      bullets:
+        [
+          "System architecture diagrams",
+          "Code structure and module descriptions",
+          "Technology stack details",
+          "Setup and configuration steps",
+          "Build and deployment instructions",
+          "Integration points and dependencies",
+          "Troubleshooting and debugging guidelines"
+        ]
+
+    },
+    {
+      id: 'business-reference',
+      tab: 'reference',
+      title: 'Business Reference',
+      subtitle: 'High-level documentation aligning technical solutions with business objectives and processes.',
+      bullets:
+        [
+          "Business goals and objectives",
+          "Key use cases and workflows",
+          "Stakeholder requirements",
+          "KPIs and success metrics",
+          "Compliance and regulatory considerations",
+          "Impact analysis on business operations",
+          "Process flow diagrams"
+        ]
+
     }
     // You can add more cards to "guides" and "reference" to match future growth
   ]);
