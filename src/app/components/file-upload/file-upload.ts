@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output, signal, computed, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { GeneratorService } from '../../services/generator';
 
 interface FileNode {
   name: string;
