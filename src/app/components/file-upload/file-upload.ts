@@ -37,25 +37,36 @@ export class FileUpload {
     if (evt.dataTransfer?.files?.length) this.onFilesSelected({ target: { files: evt.dataTransfer.files } });
   }
 
-onFilesSelected(event: any) {
-  const selectedFiles: File[] = Array.from(event.target.files as FileList);
-
-  if (this.mode === 'folder') {
-    const validFiles: File[] = selectedFiles.filter(file => {
-      const pathParts = (file as any).webkitRelativePath?.split('/') || [];
-      return !pathParts.some((p:any) => this.excludedFolders.includes(p));
-    });
-
-    const fileTree = this.buildFileTree(validFiles);
-    this.folderSelected.emit({ tree: fileTree, files: validFiles });
-  } 
-  else if (this.mode === 'docs') {
-    const validDocs: File[] = selectedFiles.filter(file =>
-      file.name.endsWith('.docx') || file.name.endsWith('.md') || file.name.endsWith('.txt')
-    );
-    this.docsSelected.emit(validDocs);
+  remove(index: number) {
+    const current = this.files();
+    this.files.set(current.filter((_, i) => i !== index));
+    // Emit updated docs back
+    if (this.mode === 'docs') {
+      this.docsSelected.emit(this.files());
+    }
   }
-}
+
+
+  onFilesSelected(event: any) {
+    const selectedFiles: File[] = Array.from(event.target.files as FileList);
+
+    if (this.mode === 'folder') {
+      const validFiles: File[] = selectedFiles.filter(file => {
+        const pathParts = (file as any).webkitRelativePath?.split('/') || [];
+        return !pathParts.some((p: any) => this.excludedFolders.includes(p));
+      });
+
+      const fileTree = this.buildFileTree(validFiles);
+      this.folderSelected.emit({ tree: fileTree, files: validFiles });
+    }
+    else if (this.mode === 'docs') {
+      const validDocs: File[] = selectedFiles.filter(file =>
+        file.name.endsWith('.docx') || file.name.endsWith('.md') || file.name.endsWith('.txt')
+      );
+      this.files.set(validDocs);   // ✅ keep in state for UI
+      this.docsSelected.emit(validDocs);
+    }
+  }
 
 
   private buildFileTree(files: File[]): FileNode[] {

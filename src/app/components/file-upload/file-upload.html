@@ -28,8 +28,8 @@
     </div>
   </div>
 
-  <!-- Uploaded file list -->
-  <!-- <div class="list" *ngIf="files().length">
+  <!-- Uploaded file list (only for docs mode) -->
+  <div class="list" *ngIf="mode === 'docs' && files().length">
     <div class="item" *ngFor="let f of files(); let i = index">
       <div class="file-row">
         <div class="icon-file">📄</div>
@@ -40,5 +40,5 @@
       </div>
       <button class="remove" (click)="remove(i)" aria-label="Remove">✕</button>
     </div>
-  </div> -->
+  </div>
 </div>

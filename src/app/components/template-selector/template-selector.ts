@@ -60,7 +60,12 @@ export class TemplateSelector {
     // You can add more cards to "guides" and "reference" to match future growth
   ]);
 
+  selected = signal<string | null>(null);
+
   filtered = computed(() => this.cards().filter(c => c.tab === this.tab()));
-  pick(id: string){ this.templatePicked.emit(id); }
-  setTab(t: TemplateTab){ this.tab.set(t); }
+  pick(id: string) { 
+    this.selected.set(id);
+    this.templatePicked.emit(id); 
+  }
+  setTab(t: TemplateTab) { this.tab.set(t); }
 }

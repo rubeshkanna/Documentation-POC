@@ -6,7 +6,7 @@
 </div>
 
 <div class="cards">
-  <div class="card template" *ngFor="let c of filtered()">
+  <div class="card template" *ngFor="let c of filtered()" [class.selected]="selected() === c.id" (click)="pick(c.id)">
     <div class="template-body">
       <div class="template-title">{{ c.title }}</div>
       <div class="template-sub">{{ c.subtitle }}</div>
@@ -14,6 +14,10 @@
         <li *ngFor="let b of c.bullets">• {{ b }}</li>
       </ul>
     </div>
-    <button class="btn btn-ghost" (click)="pick(c.id)">Select</button>
+
+    <!-- indicator on the right -->
+    <div class="select-indicator">
+      <div class="checkbox" [class.checked]="selected() === c.id"></div>
+    </div>
   </div>
 </div>
