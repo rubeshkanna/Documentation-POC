@@ -6,6 +6,8 @@ interface FileNode {
   name: string;
   type: 'file' | 'folder';
   children?: FileNode[];
+  expanded?: boolean; // <-- added for folder expand/collapse
+  path?: string;
 }
 
 @Component({
@@ -47,6 +49,26 @@ export class FileUpload {
   }
 
 
+  // onFilesSelected(event: any) {
+  //   const selectedFiles: File[] = Array.from(event.target.files as FileList);
+
+  //   if (this.mode === 'folder') {
+  //     const validFiles: File[] = selectedFiles.filter(file => {
+  //       const pathParts = (file as any).webkitRelativePath?.split('/') || [];
+  //       return !pathParts.some((p: any) => this.excludedFolders.includes(p));
+  //     });
+
+  //     const fileTree = this.buildFileTree(validFiles);
+  //     this.folderSelected.emit({ tree: fileTree, files: validFiles });
+  //   }
+  //   else if (this.mode === 'docs') {
+  //     const validDocs: File[] = selectedFiles.filter(file =>
+  //       file.name.endsWith('.docx') || file.name.endsWith('.md') || file.name.endsWith('.txt')
+  //     );
+  //     this.files.set(validDocs);   // ✅ keep in state for UI
+  //     this.docsSelected.emit(validDocs);
+  //   }
+  // }
   onFilesSelected(event: any) {
     const selectedFiles: File[] = Array.from(event.target.files as FileList);
 
@@ -56,27 +78,65 @@ export class FileUpload {
         return !pathParts.some((p: any) => this.excludedFolders.includes(p));
       });
 
+      // get relative paths like "src/app/app.component.ts"
+      const filePaths = validFiles.map(f => (f as any).webkitRelativePath);
+
       const fileTree = this.buildFileTree(validFiles);
-      this.folderSelected.emit({ tree: fileTree, files: validFiles });
+      this.folderSelected.emit({ tree: fileTree, files: filePaths });
     }
     else if (this.mode === 'docs') {
       const validDocs: File[] = selectedFiles.filter(file =>
         file.name.endsWith('.docx') || file.name.endsWith('.md') || file.name.endsWith('.txt')
       );
-      this.files.set(validDocs);   // ✅ keep in state for UI
-      this.docsSelected.emit(validDocs);
+
+      // If user selects docs from a folder, use relative path, else fallback to file.name
+      const docPaths = validDocs.map(f => (f as any).webkitRelativePath || f.name);
+
+      this.docsSelected.emit(docPaths);
     }
   }
 
 
+
+  // private buildFileTree(files: File[]): FileNode[] {
+  //   const root: FileNode[] = [];
+  //   files.forEach(file => {
+  //     const pathParts = (file as any).webkitRelativePath.split('/');
+  //     this.addToTree(root, pathParts);
+  //   });
+  //   return root;
+  // }
+
   private buildFileTree(files: File[]): FileNode[] {
     const root: FileNode[] = [];
-    files.forEach(file => {
-      const pathParts = (file as any).webkitRelativePath.split('/');
-      this.addToTree(root, pathParts);
-    });
+
+    for (const file of files) {
+      const parts = file.webkitRelativePath.split('/');
+      let currentLevel = root;
+
+      parts.forEach((part, index) => {
+        let existingNode = currentLevel.find(n => n.name === part);
+
+        if (!existingNode) {
+          existingNode = {
+            name: part,
+            type: index === parts.length - 1 ? 'file' : 'folder',
+            children: index === parts.length - 1 ? undefined : [],
+            expanded: false,   // <-- every folder starts collapsed
+            path: file.webkitRelativePath
+          };
+          currentLevel.push(existingNode);
+        }
+
+        if (existingNode.children) {
+          currentLevel = existingNode.children;
+        }
+      });
+    }
+
     return root;
   }
+
 
   private addToTree(tree: FileNode[], pathParts: string[]) {
     if (!pathParts.length) return;

@@ -1,4 +1,4 @@
-<div class="card repo">
+<!-- <div class="card repo">
   <div class="repo-tree">
     <ng-container *ngFor="let node of fileTree">
       <div class="tree-item">
@@ -12,8 +12,35 @@
       </div>
     </ng-container>
   </div>
-  <!-- <div class="row" *ngFor="let e of entries">
+   <div class="row" *ngFor="let e of entries">
       <span class="icon">{{ e.type === 'folder' ? '📁' : '📄' }}</span>
       <span class="name">{{ e.name }}</span>
-    </div> -->
+    </div> 
+</div> -->
+<div class="card repo">
+  <div class="repo-tree">
+    <ng-container *ngFor="let node of fileTree">
+      <div class="tree-item">
+        <span [class.folder]="node.type === 'folder'" [class.file]="node.type === 'file'" (click)="toggle(node)">
+
+          <span class="icon">
+            <!-- folder open/close icons -->
+            <ng-container *ngIf="node.type === 'folder'">
+              {{ node.expanded ? '📂' : '📁' }}
+            </ng-container>
+            <!-- file icon -->
+            <ng-container *ngIf="node.type === 'file'">
+              📄
+            </ng-container>
+          </span>
+          {{ node.name }}
+        </span>
+
+        <!-- recursive children -->
+        <div *ngIf="node.children && node.expanded" class="children">
+          <app-repo-preview [fileTree]="node.children"></app-repo-preview>
+        </div>
+      </div>
+    </ng-container>
+  </div>
 </div>

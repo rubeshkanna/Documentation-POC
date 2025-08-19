@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 
 export interface RepoEntry {
   name: string;
-  type: 'folder'|'file';
+  type: 'folder' | 'file';
 }
 
 interface FileNode {
   name: string;
   type: 'file' | 'folder';
   children?: FileNode[];
+  expanded?: boolean; // <-- added for folder expand/collapse
 }
 
 @Component({
@@ -21,11 +22,18 @@ interface FileNode {
 })
 export class RepoPreview {
   @Input() entries: RepoEntry[] = [
-    {name:'src', type:'folder'},
-    {name:'lib', type:'folder'},
-    {name:'package.json', type:'file'},
-    {name:'README.md', type:'file'}
+    { name: 'src', type: 'folder' },
+    { name: 'lib', type: 'folder' },
+    { name: 'package.json', type: 'file' },
+    { name: 'README.md', type: 'file' }
   ];
 
   @Input() fileTree: FileNode[] = [];
+
+  toggle(node: FileNode) {
+    if (node.type === 'folder') {
+      node.expanded = !node.expanded;
+    }
+  }
+
 }
