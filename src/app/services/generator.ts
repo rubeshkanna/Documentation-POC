@@ -4,10 +4,8 @@ import { Observable, delay, from, map, of, scan } from 'rxjs';
 
 export interface GenerateRequest {
   files: File[];
+  docs?: File[];
   templateId: string;
-  includeExamples: boolean;
-  includeTypes: boolean;
-  detail: 'concise'|'detailed'|'complete';
 }
 
 export interface GenerateProgress {
@@ -21,6 +19,11 @@ export class GeneratorService {
  private readonly apiUrl = ''
 
   constructor(private http:HttpClient) { }
+
+  generateDocumentation(payload: GenerateRequest) {
+    return this.http.post('/api/generate-docs', payload).toPromise();
+  }
+
   // TODO: replace with real HTTP calls. This simulates a streaming progress UX.
   generate(req: GenerateRequest): Observable<GenerateProgress> {
     const steps: GenerateProgress[] = [

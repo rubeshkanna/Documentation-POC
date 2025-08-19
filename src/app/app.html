@@ -8,44 +8,30 @@
   </div>
 
   <div class="grid grid-2">
-    <!-- Left column: uploader + repo preview -->
+    <!-- Left column -->
     <div class="stack">
       <div class="card">
-        <!-- <app-file-upload (filesChange)="files.set($event)"></app-file-upload> -->
-        <app-file-upload (folderSelected)="onFolderSelected($event)"></app-file-upload>
+        <app-file-upload mode="folder" (folderSelected)="onFolderSelected($event)"></app-file-upload>
       </div>
-      <!-- <app-repo-preview></app-repo-preview> -->
 
       <div class="card section">
         <app-template-selector (templatePicked)="templateId.set($event)"></app-template-selector>
       </div>
 
-      <!-- <app-generation-settings [(value)]="settings" (valueChange)="settings.set($event)">
-      </app-generation-settings> -->
-
       <div class="card">
-        <!-- <app-file-upload (filesChange)="files.set($event)"></app-file-upload> -->
-        <app-file-upload (folderSelected)="onFolderSelected($event)"></app-file-upload>
+        <app-file-upload mode="docs" (docsSelected)="onDocsSelected($event)"></app-file-upload>
       </div>
 
-      <div class="cta ">
-        <button class="btn btn-primary" [disabled]="!repoStructure.length" (click)="onGenerate()">
+      <div class="cta">
+        <button class="btn btn-primary" [disabled]="!canGenerate()" (click)="onGenerate()">
           ✨ Generate Documentation
         </button>
-
-        <div class="status" *ngIf="generating() || progress()===100">
-          <div class="bar">
-            <div class="fill" [style.width.%]="progress()"></div>
-          </div>
-          <div class="text">{{progressText()}}</div>
-        </div>
       </div>
     </div>
 
-    <!-- Right column: template + settings -->
+    <!-- Right column -->
     <div class="stack">
       <app-repo-preview [fileTree]="repoStructure"></app-repo-preview>
-
     </div>
   </div>
 </div>

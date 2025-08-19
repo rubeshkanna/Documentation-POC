@@ -1,29 +1,35 @@
 <div class="upload card" [class.dragging]="dragging()" (drop)="onDrop($event)">
   <div class="dropzone">
     <div class="icon">⬆️</div>
-    <div class="title">Drag &amp; drop files here, or
+
+    <!-- Dynamic title -->
+    <div class="title" *ngIf="mode === 'folder'">
+      Drag &amp; drop a folder here, or
       <label class="browse">
         browse
-        <!-- <input type="file" multiple [accept]="accept" (change)="onBrowse($event)"/> -->
         <input type="file" (change)="onFilesSelected($event)" multiple webkitdirectory directory />
       </label>
     </div>
 
-    <div class="help">Supports .js, .ts, .jsx, .tsx, .py, .java, .cpp files</div>
+    <div class="title" *ngIf="mode === 'docs'">
+      Drag &amp; drop reference documents here, or
+      <label class="browse">
+        browse
+        <input type="file" (change)="onFilesSelected($event)" multiple accept=".docx,.md,.txt" />
+      </label>
+    </div>
+
+    <!-- Help text -->
+    <div class="help" *ngIf="mode === 'folder'">
+      Supports project folders (.js, .ts, .jsx, .tsx, .py, .java, .cpp files)
+    </div>
+    <div class="help" *ngIf="mode === 'docs'">
+      Supports .docx, .md, .txt files (optional reference documents)
+    </div>
   </div>
 
-  <!-- <div class="upload-container">
-    <input 
-      type="file" 
-      (change)="onFilesSelected($event)" 
-      multiple
-      webkitdirectory
-      directory
-    />
-    <p>Drag & drop or select a folder</p>
-  </div> -->
-
-  <div class="list" *ngIf="files().length">
+  <!-- Uploaded file list -->
+  <!-- <div class="list" *ngIf="files().length">
     <div class="item" *ngFor="let f of files(); let i = index">
       <div class="file-row">
         <div class="icon-file">📄</div>
@@ -34,5 +40,5 @@
       </div>
       <button class="remove" (click)="remove(i)" aria-label="Remove">✕</button>
     </div>
-  </div>
+  </div> -->
 </div>
