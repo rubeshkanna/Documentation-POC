@@ -17,6 +17,9 @@ export interface GenerateProgress {
 
 @Injectable({providedIn: 'root'})
 export class GeneratorService {
+ private readonly apiUrl = ''
+
+  constructor(private http:HttpClient) { }
   // TODO: replace with real HTTP calls. This simulates a streaming progress UX.
   generate(req: GenerateRequest): Observable<GenerateProgress> {
     const steps: GenerateProgress[] = [
@@ -35,5 +38,21 @@ export class GeneratorService {
       scan((_, v) => v),
       map(v => v)
     );
+  }
+
+  uploadFiles(files: File[]): Observable<HttpEvent<any>> {
+    const formData = new FormData();
+     files.forEach(file => {
+      //keep relative path to preserve folder structure
+      const relativePath = (file as any).webkitRelativePath || file.name;
+      formData.append("files", file, relativePath);
+     });
+
+     const req = new HttpRequest('POST', this.apiUrl, formData, {
+      reportProgress: true,
+      headers: new HttpHeaders({})
+     });
+
+     return this.http.request(req)
   }
 }
