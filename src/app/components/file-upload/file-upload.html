@@ -1,4 +1,6 @@
 <div class="upload card" [class.dragging]="dragging()" (drop)="onDrop($event)">
+  <div class="section-title" *ngIf="mode === 'folder'">Code Repo</div>
+  <div class="section-title" *ngIf="mode === 'docs'">Reference docs</div>
   <div class="dropzone">
     <div class="icon">⬆️</div>
 
