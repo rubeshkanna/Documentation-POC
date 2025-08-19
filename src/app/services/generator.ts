@@ -1,3 +1,4 @@
+import { HttpClient, HttpEvent, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, delay, from, map, of, scan } from 'rxjs';
 
