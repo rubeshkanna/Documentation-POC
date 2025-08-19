@@ -17,6 +17,8 @@ interface FileNode {
 export class FileUpload {
   @Output() filesChange = new EventEmitter<File[]>();
 
+  constructor(private generatorService: GeneratorService) { }
+
   files = signal<File[]>([]);
   dragging = signal(false);
 
@@ -67,14 +69,35 @@ export class FileUpload {
 
 
   @Output() folderSelected = new EventEmitter<FileNode[]>();
+  private selectedFiles: File[] = [];
 
   // Folders we want to skip entirely
   private excludedFolders = ['node_modules', '.angular', '.vscode', '.git'];
 
   onFilesSelected(event: any) {
-    const files: File[] = Array.from(event.target.files);
-    const fileTree = this.buildFileTree(files);
+    this.selectedFiles = Array.from(event.target.files);
+    const validFiles = this.selectedFiles.filter(file=> {
+      const pathParts = (file as any).webkitRelativePath.split('/');
+      return !pathParts.some((part: any) => this.excludedFolders.includes(part));
+    })
+    const fileTree = this.buildFileTree(validFiles);
     this.folderSelected.emit(fileTree);
+
+    this.uploadToBackend(validFiles);
+  }
+
+  uploadToBackend(files: File[]) {
+    this.generatorService.uploadFiles(files).subscribe({
+      next: event => {
+        console.log(event)
+      },
+      error: err=> {
+        console.log(err)
+      },
+      complete: () =>{
+        console.log('upload done')
+      }
+    });
   }
 
   private buildFileTree(files: File[]): FileNode[] {
