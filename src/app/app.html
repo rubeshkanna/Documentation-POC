@@ -11,7 +11,7 @@
     <!-- Left column -->
     <div class="stack">
       <div class="card">
-        <app-file-upload mode="folder" (folderSelected)="onFolderSelected($event)"></app-file-upload>
+        <app-file-upload (folderSelected)="onFolderSelected($event)"></app-file-upload>
       </div>
 
       <div class="card section">
@@ -19,19 +19,28 @@
       </div>
 
       <div class="card">
-        <app-file-upload mode="docs" (docsSelected)="onDocsSelected($event)"></app-file-upload>
+        <app-file-upload mode="docs" (docsSelected)="onDocsSelected($event)">
+        </app-file-upload>
       </div>
 
       <div class="cta">
-        <button class="btn btn-primary" [disabled]="!canGenerate()" (click)="onGenerate()">
+        <button class="btn btn-primary" [disabled]="!repoStructure.length" (click)="onGenerate()">
           ✨ Generate Documentation
         </button>
+
+        <!-- <div class="status" *ngIf="generating() || progress()===100">
+          <div class="bar">
+            <div class="fill" [style.width.%]="progress()"></div>
+          </div>
+          <div class="text">{{progressText()}}</div>
+        </div> -->
       </div>
     </div>
 
     <!-- Right column -->
-    <div class="stack">
+    <div class="repo-preview-card">
       <app-repo-preview [fileTree]="repoStructure"></app-repo-preview>
     </div>
   </div>
+
 </div>

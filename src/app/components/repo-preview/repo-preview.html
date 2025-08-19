@@ -1,26 +1,19 @@
 <div class="card repo">
-    <div class="repo-tree">
-        <ng-container *ngFor="let node of fileTree">
-          <div class="tree-item">
-            <span [class.folder]="node.type === 'folder'" [class.file]="node.type === 'file'">
-                <span class="icon">{{ node.type === 'folder' ? '📁' : '📄' }}</span>
-              <!-- <i *ngIf="node.type === 'folder'" class="fa fa-folder"></i> -->
-              <!-- <i *ngIf="node.type === 'file'" class="fa fa-file"></i> -->
-              {{ node.name }}
-            </span>
-            <div *ngIf="node.children" class="children">
-              <app-repo-preview [fileTree]="node.children"></app-repo-preview>
-            </div>
-          </div>
-        </ng-container>
+  <div class="repo-tree">
+    <ng-container *ngFor="let node of fileTree">
+      <div class="tree-item">
+        <span [class.folder]="node.type === 'folder'" [class.file]="node.type === 'file'">
+          <span class="icon">{{ node.type === 'folder' ? '📁' : '📄' }}</span>
+          {{ node.name }}
+        </span>
+        <div *ngIf="node.children" class="children">
+          <app-repo-preview [fileTree]="node.children"></app-repo-preview>
+        </div>
       </div>
-    <!-- <div class="row" *ngFor="let e of entries">
+    </ng-container>
+  </div>
+  <!-- <div class="row" *ngFor="let e of entries">
       <span class="icon">{{ e.type === 'folder' ? '📁' : '📄' }}</span>
       <span class="name">{{ e.name }}</span>
     </div> -->
-  </div>
-
-
-
-  
-  
+</div>
